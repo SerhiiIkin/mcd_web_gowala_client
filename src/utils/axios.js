@@ -23,8 +23,7 @@ export const axiosGetProduct = async (id) => {
         console.log("Error fetching product:", error);
         toast.error("Error fetching product");
     }
-}
-
+};
 
 export const axiosRemoveProduct = async (id) => {
     try {
@@ -93,6 +92,27 @@ export const axiosSendMessage = async (message) => {
     } catch (error) {
         console.log("Error sending message:", error);
         toast.error("Error sending message");
+    }
+};
+
+export const axiosGetMessages = async () => {
+    try {
+        const { data } = await axiosInstance.get("messages");
+        return data.data;
+    } catch (error) {
+        console.log("Error fetching messages:", error);
+        toast.error("Error fetching messages");
+    }
+};
+
+export const axiosUpdateStatusMessage = async (message) => {
+    console.log("🚀 ~ axiosUpdateStatusMessage ~ message:", message);
+    try {
+        const { data } = await axiosInstance.put("message", message);
+        return data;
+    } catch (error) {
+        console.log("Error updating message status:", error);
+        toast.error("Error updating message status");
     }
 };
 

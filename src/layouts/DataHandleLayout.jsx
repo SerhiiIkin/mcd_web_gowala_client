@@ -10,6 +10,7 @@ const DataHandleLayout = ({
     containerClassNameSkeleton,
     emptyText
 }) => {
+    
     if (data.error) {
         return (
             <div

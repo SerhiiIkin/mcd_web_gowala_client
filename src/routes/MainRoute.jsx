@@ -11,6 +11,7 @@ import BackofficeLayout from "@layouts/BackofficeLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Products from "@/pages/backoffice/Products";
 import ProductForm from "@/pages/backoffice/components/ProductForm";
+import Messages from "@/pages/backoffice/Messages";
 
 const MainRoute = () => {
     const queryClient = new QueryClient();
@@ -62,6 +63,11 @@ const MainRoute = () => {
                     path: "products/:id",
                     element: <ProductForm />,
                 },
+                {
+                    path: "messages",
+                    element: <Messages />,
+                },
+
             ],
         },
     ];

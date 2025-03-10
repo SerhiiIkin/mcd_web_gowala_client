@@ -10,6 +10,7 @@ const BackofficeSideBar = () => {
     const sideBarLinks = [
         { name: "Backoffice", path: "/backoffice" },
         { name: "Produkter", path: "/backoffice/products" },
+        { name: "Messages", path: "/backoffice/messages" },
     ];
 
     const sideBar = useRef(null);
