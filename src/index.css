@@ -1,0 +1,57 @@
+@import url(https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,regular,500,600,700,800,900);
+@import "tailwindcss";
+
+@theme {
+    --font-display: "Frank Ruhl Libre", "sans-serif";
+    --color-primary: #5e9a13;
+    --color-secondary: #eff4f8;
+    --font-Roboto: "Roboto", "sans-serif";
+    --breakpoint-2xl: 1440px;
+}
+
+@layer base {
+    html {
+        font-family: var(--font-display);
+    }
+    button {
+        @apply cursor-pointer;
+    }
+    textarea {
+        @apply resize-none;
+    }
+}
+
+.grid-auto-cols-500 {
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+}
+.grid-auto-cols-300 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.burger-btn {
+    @apply w-8 h-5 relative  cursor-pointer;
+    &:before,
+    &:after {
+        @apply content-[""] absolute  w-full h-0.5 bg-primary duration-300;
+    }
+
+    &:before {
+        @apply top-0;
+    }
+    &:after {
+        @apply bottom-0;
+    }
+}
+
+.btn-green {
+    @apply font-Roboto font-semibold text-white text-xl bg-primary  rounded-full;
+}
+
+.btn-submit {
+    @apply bg-primary text-white py-2 disabled:opacity-55 disabled:cursor-not-allowed flex gap-4 justify-center xl:hover:text-primary xl:hover:bg-white xl:duration-700;
+}
+
+.pagination-bullet-activ {
+    background: var(--color-primary) !important;
+    opacity: 1 !important;
+}
