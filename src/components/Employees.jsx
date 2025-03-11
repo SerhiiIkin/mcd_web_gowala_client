@@ -16,7 +16,7 @@ const Employee = ({ employee }) => {
     const mouseOverContent = contextSafe(() => {
         gsap.to(descriptionRef.current, {
             opacity: 1,
-            duration: 0.8,
+            duration: 1.5,
             ease: "power3.inOut",
             zIndex: 1,
             display: "block",
@@ -27,11 +27,11 @@ const Employee = ({ employee }) => {
             gsap.to(descriptionRef.current, {
                 opacity: 0,
                 stagger: 0.1,
-                duration: 0.1,
+                duration: 0,
                 zIndex: -1,
                 display: "none",
             });
-        }, 100);
+        }, 1600);
     });
 
     return (

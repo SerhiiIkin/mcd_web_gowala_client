@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { object, string } from "yup";
 import Loader from "@components/Loader";
 import { toast } from "react-toastify";
+import DataHandleLayout from "@/layouts/DataHandleLayout";
 
 const Order = () => {
     return (
@@ -53,6 +54,36 @@ const OrderContent = () => {
         );
     }, [currentItems]);
 
+    return (
+        <article className="bg-secondary pt-14 pb-9 px-4">
+            <div className="grid gap-4 justify-items-center mb-6 max-w-3xl mx-auto">
+                <DataHandleLayout
+                    data={{
+                        data: currentItems,
+                        isLoading: data?.isLoading,
+                        error: data?.error,
+                    }}
+                    SkeletonCount={4}
+                    containerClassNameSkeleton="py-5"
+                    emptyText="Ingen produkter fundet"
+                    className="py-5">
+                    {currentItems.map((item) => (
+                        <SingleOrder key={item.title} item={item} />
+                    ))}
+                    <div className="flex gap-2 items-center mb-6 justify-end min-w-64 w-full bg-white p-1">
+                        <p className="text-primary">I alt:</p>
+                        <span className="font-semibold">{total} ,-</span>
+                    </div>
+                </DataHandleLayout>
+            </div>
+
+           {currentItems.length > 0 && <OrderForm />}
+        </article>
+    );
+};
+
+const SingleOrder = ({ item }) => {
+    const [items, saveItems] = useLocalStorage("items", []);
     const CloseSvg = () => {
         return (
             <svg
@@ -99,62 +130,46 @@ const OrderContent = () => {
     };
 
     return (
-        <article className="bg-secondary pt-14 pb-9 px-4">
-            <div className="grid gap-4 justify-items-center mb-6 max-w-3xl mx-auto">
-                {currentItems.map((item) => (
-                    <div
-                        key={item.title}
-                        className="grid bg-white p-2 gap-2  min-w-64 w-full">
-                        {item.image && (
-                            <img
-                                src={item.image}
-                                alt="product img"
-                                className="max-w-14 lg:max-w-28 aspect-square object-cover row-span-3 w-full"
-                            />
-                        )}
-                        <div className="font-medium col-start-2 text-left">
-                            {item.title}
-                            <p className="text-primary">{item.price},-</p>
-                        </div>
-
-                        <button
-                            className="col-start-3 justify-self-end  self-start"
-                            onClick={() =>
-                                saveItems(
-                                    items.filter(
-                                        (i) => i.product !== item.product
-                                    )
-                                )
-                            }>
-                            <CloseSvg />
-                        </button>
-                        <div className="flex gap-2 items-center p-1 ">
-                            <button
-                                onClick={() => changeQuantity(event, item)}
-                                className="bg-primary text-white w-6 aspect-square rounded-full">
-                                -
-                            </button>
-                            <p>{item.quantity}</p>
-                            <button
-                                onClick={() => changeQuantity(event, item)}
-                                className="bg-primary text-white w-6 aspect-square rounded-full">
-                                +
-                            </button>
-                        </div>
-                        <div className="row-start-3 col-start-3 justify-self-end flex gap-2 ">
-                            <span className="text-primary">Total </span>
-                            {item.price * item.quantity} ,-
-                        </div>
-                    </div>
-                ))}
-                <div className="flex gap-2 items-center mb-6 justify-end min-w-64 w-full bg-white p-1">
-                    <p className="text-primary">I alt:</p>
-                    <span className="font-semibold">{total} ,-</span>
-                </div>
+        <div
+            key={item.title}
+            className="grid bg-white p-2 gap-2  min-w-64 w-full">
+            {item.image && (
+                <img
+                    src={item.image}
+                    alt="product img"
+                    className="max-w-14 lg:max-w-28 aspect-square object-cover row-span-3 w-full"
+                />
+            )}
+            <div className="font-medium col-start-2 text-left">
+                {item.title}
+                <p className="text-primary">{item.price},-</p>
             </div>
 
-            <OrderForm />
-        </article>
+            <button
+                className="col-start-3 justify-self-end  self-start"
+                onClick={() =>
+                    saveItems(items.filter((i) => i.product !== item.product))
+                }>
+                <CloseSvg />
+            </button>
+            <div className="flex gap-2 items-center p-1 ">
+                <button
+                    onClick={() => changeQuantity(event, item)}
+                    className="bg-primary text-white w-6 aspect-square rounded-full">
+                    -
+                </button>
+                <p>{item.quantity}</p>
+                <button
+                    onClick={() => changeQuantity(event, item)}
+                    className="bg-primary text-white w-6 aspect-square rounded-full">
+                    +
+                </button>
+            </div>
+            <div className="row-start-3 col-start-3 justify-self-end flex gap-2 ">
+                <span className="text-primary">Total </span>
+                {item.price * item.quantity} ,-
+            </div>
+        </div>
     );
 };
 

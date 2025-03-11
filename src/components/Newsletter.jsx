@@ -5,18 +5,24 @@ import { useMutation } from "@tanstack/react-query";
 import { axiosSubscribe } from "@utils/axios";
 import { object, string } from "yup";
 import Loader from "@components/Loader";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "@components/Modal";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Form = () => {
     const [email, setEmail] = useState("");
     const [modalState, setModalState] = useState(false);
 
+    const backdropRef = useRef(null);
+    const contentModalRef = useRef(null);
+    const { contextSafe } = useGSAP({ scope: contentModalRef });
+
     const mutationSubscribe = useMutation({
         mutationFn: axiosSubscribe,
         onSuccess: (data) => {
             if (!data.data.email) return;
-            setModalState(true);
+            changeModalState();
             setEmail(data.data.email);
             formik.resetForm();
         },
@@ -40,13 +46,46 @@ const Form = () => {
         validationSchema,
     });
 
+    const changeModalState = contextSafe(() => {
+        setModalState((prev) => !prev);
+        const duration = 0.8;
+
+        if (modalState) {
+            gsap.to(backdropRef.current, {
+                opacity: 0,
+                duration,
+            });
+            gsap.to(contentModalRef.current, {
+                opacity: 0,
+                duration,
+                display: "none",
+            });
+        } else {
+            gsap.to(backdropRef.current, {
+                opacity: 1,
+                duration,
+            });
+            gsap.to(contentModalRef.current, {
+                opacity: 1,
+                duration,
+                display: "grid",
+            });
+        }
+    });
+
+    const modalProps = {
+        text: " Du har nu tilmeldt dit nyhedsbrev.",
+        title: "Tak",
+        email,
+        modalState,
+        setModalState: changeModalState,
+        backdropRef,
+        contentModalRef,
+    };
+
     return (
         <>
-            <Modal
-                email={email}
-                modalState={modalState}
-                setModalState={setModalState}
-            />
+            <Modal {...modalProps} />
             <form onSubmit={formik.handleSubmit} className="grid gap-2">
                 <label className="relative pb-6 grid">
                     <input

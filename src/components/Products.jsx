@@ -65,7 +65,7 @@ const Select = ({ onChange }) => {
 
     return (
         <div
-            className="relative w-full"
+            className="relative"
             ref={selectRef}
             tabIndex={0}
             onKeyDown={handleKeyDown}
@@ -77,7 +77,7 @@ const Select = ({ onChange }) => {
             </div>
 
             {isOpen && (
-                <div className="absolute mt-1 w-full bg-white shadow-md rounded-md z-30">
+                <div className="absolute mt-1 w-full left-0 bg-white shadow-md rounded-md z-30">
                     {options.map((option, index) => (
                         <div
                             key={option.value}
@@ -134,8 +134,8 @@ const Product = ({ product, slider }) => {
                 {!slider && (
                     <button
                         onClick={addToBasket}
-                        className="btn-green py-4 px-9 flex gap-2 items-center min-w-max">
-                        <BasketIco className="fill-white" />
+                        className="btn-green py-4 px-9 flex gap-2 items-center min-w-max group">
+                        <BasketIco className="fill-white xl:group-hover:fill-primary xl:group-hover:duration-700 " />
                         Tilføj til kurv
                     </button>
                 )}
@@ -230,7 +230,7 @@ const Products = ({ favorites }) => {
                                 slidesPerView={1}
                                 modules={[Pagination, A11y]}>
                                 <div>
-                                    {products.map((product) => (
+                                    {data.data && data?.data.map((product) => (
                                         <SwiperSlide key={product._id}>
                                             <Product product={product} slider />
                                         </SwiperSlide>

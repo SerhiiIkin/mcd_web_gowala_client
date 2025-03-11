@@ -44,11 +44,11 @@
 }
 
 .btn-green {
-    @apply font-Roboto font-semibold text-white text-xl bg-primary  rounded-full;
+    @apply font-Roboto font-semibold text-white text-xl bg-primary  rounded-full xl:hover:text-primary xl:hover:bg-white xl:duration-700 xl:hover:outline xl:hover:outline-primary ;
 }
 
 .btn-submit {
-    @apply bg-primary text-white py-2 disabled:opacity-55 disabled:cursor-not-allowed flex gap-4 justify-center xl:hover:text-primary xl:hover:bg-white xl:duration-700;
+    @apply bg-primary text-white py-2 disabled:opacity-55 disabled:cursor-not-allowed flex gap-4 justify-center xl:hover:text-primary xl:hover:bg-white xl:duration-700 disabled:hover:bg-primary disabled:hover:text-white xl:hover:outline;
 }
 
 .pagination-bullet-activ {

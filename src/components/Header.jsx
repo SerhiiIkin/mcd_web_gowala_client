@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { classes } from "@utils/classes";
-import { useEffect, useState, useRef,  useMemo } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import BasketIco from "@components/BasketIco";
@@ -35,11 +35,11 @@ const Basket = () => {
         return items.length;
     }, [items]);
     return (
-        <Link to="/checkout" className="relative ml-6">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full grid place-items-center  text-xs text-white">
+        <Link to="/checkout" className="relative ml-6 group">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full grid place-items-center  text-xs text-white  group-hover:xl:scale-110 xl:duration-700 z-10">
                 {count}
             </div>
-            <BasketIco className="fill-primary" />
+            <BasketIco className="fill-primary  group-hover:xl:scale-110 xl:duration-700" />
         </Link>
     );
 };
@@ -74,12 +74,12 @@ const NavBar = ({ navBarRef, isMobile, onClickBurgerMenu }) => {
             className={classes([
                 isMobile
                     ? "hidden absolute left-0 right-0 -bottom-full translate-y-[calc(50%+13px)] bg-white gap-4 pr-2  text-right z-20 "
-                    : "hidden md:flex md:gap-4 md:static md:translate-y-0 md:bg-transparent  ",
+                    : "hidden md:flex md:gap-4 md:static md:translate-y-0 md:bg-transparent",
             ])}>
             {navList.map((item, i) => (
                 <Link
                     key={i}
-                    className="text-2xl"
+                    className="text-2xl font-semibold hover:text-primary duration-300"
                     onClick={onClickBurgerMenu}
                     to={item.href}>
                     {item.name}
