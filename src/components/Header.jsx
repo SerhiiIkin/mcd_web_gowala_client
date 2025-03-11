@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import BasketIco from "@components/BasketIco";
 import LogoLink from "@components/LogoLink";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import { routes } from "@constants/routes";
 
 const BurgerButton = ({ onClickBurgerMenu, openNav }) => (
     <button
@@ -45,28 +46,14 @@ const Basket = () => {
 };
 
 const NavBar = ({ navBarRef, isMobile, onClickBurgerMenu }) => {
-    const navList = [
-        {
-            name: "Shop",
-            href: "/shop",
-        },
-        {
-            name: "Services",
-            href: "/services",
-        },
-        {
-            name: "Om",
-            href: "/about",
-        },
-        {
-            name: "Kontakt",
-            href: "/contact",
-        },
-        {
-            name: "Checkout",
-            href: "/checkout",
-        },
-    ];
+    const navList = routes[0].children
+        .filter((route) => route.path !== "/")
+        .map((route) => {
+            return {
+                name: route.name,
+                href: route.path,
+            };
+        });
 
     return (
         <nav

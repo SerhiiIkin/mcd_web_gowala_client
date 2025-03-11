@@ -12,18 +12,27 @@ const Sponsors = () => {
     const breakpoints = {
         756: {
             slidesPerView: 3,
+            loop: imagesPath.length > 3,
         },
         1440: {
             slidesPerView: 5,
+            loop: imagesPath.length > 5,
         },
-    }
+    };
 
     return (
-        <SliderLayout slidesPerView={2} spaceBetween={0} breakpoints={breakpoints}>
+        <SliderLayout
+            slidesPerView={2}
+            spaceBetween={0}
+            breakpoints={breakpoints}>
             {imagesPath.map((image, index) => (
                 <SwiperSlide key={index} className="bg-secondary py-12">
                     <div className="flex justify-center ">
-                        <img src={image} className="w-28 aspect-square" alt="bg-image" />
+                        <img
+                            src={image}
+                            className="w-28 aspect-square"
+                            alt="bg-image"
+                        />
                     </div>
                 </SwiperSlide>
             ))}
