@@ -1,5 +1,5 @@
-import Order from "@/components/Order";
-import Welcome from "@/components/Welcome";
+import Orders from "@components/Orders";
+import Welcome from "@components/Welcome";
 
 const Checkout = () => {
 
@@ -11,7 +11,7 @@ const Checkout = () => {
     return (
         <>
             <Welcome {...welcomeData} />
-            <Order/>
+            <Orders/>
         </>
     );
 };

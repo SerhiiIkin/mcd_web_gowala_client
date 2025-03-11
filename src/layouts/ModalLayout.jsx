@@ -1,10 +1,6 @@
-import Title from "@components/Title";
-
-const Modal = ({
-    email,
+const ModalLayout = ({
     changeModalState,
-    text,
-    title,
+    children,
     backdropRef,
     contentModalRef,
 }) => {
@@ -12,12 +8,7 @@ const Modal = ({
         <div
             ref={contentModalRef}
             className="fixed inset-0 z-40 place-items-center hidden">
-            <div className="grid gap-2 py-8 px-2 text-center bg-secondary min-w-3/4">
-                <Title type="h3" className="break-words">
-                    {title} <span className="text-primary">{email}</span>
-                </Title>
-                <p className="text-primary">{text}</p>
-            </div>
+            {children}
             <div
                 ref={backdropRef}
                 title="close modal"
@@ -27,4 +18,4 @@ const Modal = ({
     );
 };
 
-export default Modal;
+export default ModalLayout;

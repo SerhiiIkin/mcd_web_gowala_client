@@ -1,16 +1,15 @@
 import SectionLayout from "@layouts/SectionLayout";
 import Title from "@components/Title";
-import { useQuery } from "@tanstack/react-query";
-import { axiosGetProducts } from "@utils/axios";
+
 import DataHandleLayout from "@layouts/DataHandleLayout";
-import BasketIco from "@components/BasketIco";
-import { useState, useRef, useEffect } from "react";
+
 import { Link } from "react-router";
-import { useLocalStorage } from "@uidotdev/usehooks";
-import { toast } from "react-toastify";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, A11y } from "swiper/modules";
 import { classes } from "@/utils/classes";
+import Product from "@components/Product";
+import Select from "@components/Select";
+import useProducts from "@/hooks/useProducts";
 
 const options = [
     { value: "name-a-z", label: "Navn A-Z" },
@@ -18,167 +17,8 @@ const options = [
     { value: "price", label: "Price" },
 ];
 
-const Select = ({ onChange }) => {
-    const [selected, setSelected] = useState(options[0]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [highlightedIndex, setHighlightedIndex] = useState(0);
-    const selectRef = useRef(null);
-
-    useEffect(() => {
-        if (isOpen) {
-            setHighlightedIndex(0);
-        }
-    }, [isOpen]);
-
-    const handleKeyDown = (event) => {
-        if (!isOpen) {
-            if (event.key === "Enter" || event.key === "ArrowDown") {
-                event.preventDefault();
-                setIsOpen(true);
-            }
-            return;
-        }
-
-        switch (event.key) {
-            case "ArrowDown":
-                event.preventDefault();
-                setHighlightedIndex((prev) => (prev + 1) % options.length);
-                break;
-            case "ArrowUp":
-                event.preventDefault();
-                setHighlightedIndex((prev) =>
-                    prev === 0 ? options.length - 1 : prev - 1
-                );
-                break;
-            case "Enter":
-                event.preventDefault();
-                const selectedOption = options[highlightedIndex];
-                setSelected(selectedOption);
-                onChange(selectedOption.value); // Викликаємо onChange з value
-                setIsOpen(false);
-                break;
-            case "Escape":
-                setIsOpen(false);
-                break;
-        }
-    };
-
-    return (
-        <div
-            className="relative"
-            ref={selectRef}
-            tabIndex={0}
-            onKeyDown={handleKeyDown}
-            onBlur={() => setIsOpen(false)}>
-            <div
-                className="w-full px-3 py-2 border border-gray-300 rounded-md cursor-pointer bg-white"
-                onClick={() => setIsOpen(!isOpen)}>
-                {selected.label}
-            </div>
-
-            {isOpen && (
-                <div className="absolute mt-1 w-full left-0 bg-white shadow-md rounded-md z-30">
-                    {options.map((option, index) => (
-                        <div
-                            key={option.value}
-                            onClick={() => {
-                                setSelected(option);
-                                onChange(option.value);
-                                setIsOpen(false);
-                            }}
-                            className={`px-3 py-2 cursor-pointer ${
-                                highlightedIndex === index
-                                    ? "bg-indigo-100"
-                                    : ""
-                            }`}>
-                            {option.label}
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-};
-
-const Product = ({ product, slider }) => {
-    const [items, saveItems] = useLocalStorage("items", []);
-
-    const addToBasket = () => {
-        const productExists = items.find((p) => p.product === product._id);
-        if (productExists) {
-            toast.info("Produktet findes allerede", `${product.title}`);
-            return;
-        }
-
-        toast.success(`Produkt tilføjet til kurv: ${product.title}`);
-        saveItems([...items, { product: product._id, quantity: 1 }]);
-    };
-
-    return (
-        <article aria-label="Produkt" className="shadow-md py-2  grid gap-10">
-            <div
-                aria-label="product container"
-                className="bg-secondary pt-11 px-18 pb-4 grid gap-5 justify-items-center relative">
-                {product.discount > 0 && (
-                    <div className="absolute top-2 right-2 btn-green px-3">
-                        {product.discount}%
-                    </div>
-                )}
-                <img src={product.image} alt="product img" />
-                <Title type="h4" className="font-semibold">
-                    {product.title}
-                </Title>
-                <Title type="h3" className="font-semibold text-primary">
-                    {product.price},-
-                </Title>
-                {!slider && (
-                    <button
-                        onClick={addToBasket}
-                        className="btn-green py-4 px-9 flex gap-2 items-center min-w-max group">
-                        <BasketIco className="fill-white xl:group-hover:fill-primary xl:group-hover:duration-700 " />
-                        Tilføj til kurv
-                    </button>
-                )}
-            </div>
-        </article>
-    );
-};
-
 const Products = ({ favorites }) => {
-    const [products, setProducts] = useState([]);
-    const data = useQuery({
-        queryKey: ["products"],
-        queryFn: axiosGetProducts,
-    });
-
-    const onChange = (value) => {
-        if (value === "name-a-z") {
-            setProducts(
-                [...products].sort((a, b) => a.title.localeCompare(b.title))
-            );
-        } else if (value === "name-z-a") {
-            setProducts(
-                [...products].sort((a, b) => b.title.localeCompare(a.title))
-            );
-        } else if (value === "price") {
-            setProducts([...products].sort((a, b) => a.price - b.price));
-        }
-    };
-
-    useEffect(() => {
-        if (!data?.data) return;
-        if (!favorites)
-            setProducts(
-                data?.data.sort((a, b) => a.title.localeCompare(b.title))
-            );
-        else
-            setProducts(
-                data?.data
-                    .sort(() => Math.random() - 0.5)
-                    .slice(0, 4)
-                    .sort((a, b) => a.title.localeCompare(b.title))
-            );
-    }, [data?.data]);
+    const { onChange, products, data } = useProducts(favorites);
 
     return (
         <SectionLayout classNameContainer="text-center 2xl:max-w-full">
@@ -195,7 +35,7 @@ const Products = ({ favorites }) => {
                     ? "Her finder du et udvalg af friske mejeriprodukter og kvalitetskød fra Gowala Farms – direkte fra pågærd til dit bord."
                     : "Her på siden finder du alle vores friske mejeriprodukter og kvalitetskød fra Gowala Farms – direkte fra pågærd til dit bord."}
             </p>
-            {!favorites && <Select onChange={onChange} />}
+            {!favorites && <Select options={options} onChange={onChange} />}
             <DataHandleLayout
                 data={{
                     data: products,
@@ -230,11 +70,15 @@ const Products = ({ favorites }) => {
                                 slidesPerView={1}
                                 modules={[Pagination, A11y]}>
                                 <div>
-                                    {data.data && data?.data.map((product) => (
-                                        <SwiperSlide key={product._id}>
-                                            <Product product={product} slider />
-                                        </SwiperSlide>
-                                    ))}
+                                    {data.data &&
+                                        data?.data.map((product) => (
+                                            <SwiperSlide key={product._id}>
+                                                <Product
+                                                    product={product}
+                                                    slider
+                                                />
+                                            </SwiperSlide>
+                                        ))}
                                 </div>
                             </Swiper>
                         </div>

@@ -1,8 +1,7 @@
-import ContactForm from "@/components/ContactForm";
-import Employees from "@/components/Employees";
-
-import FastContact from "@/components/FastContact";
-import Welcome from "@/components/Welcome";
+import ContactForm from "@components/ContactForm";
+import Employees from "@components/Employees";
+import FastContact from "@components/FastContact";
+import Welcome from "@components/Welcome";
 
 const Contact = () => {
     const welcomeData = {

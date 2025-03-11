@@ -1,117 +1,20 @@
 import Title from "@/components/Title";
 import SectionLayout from "@/layouts/SectionLayout";
-import { useMutation } from "@tanstack/react-query";
-import { useFormik } from "formik";
-import { object, string } from "yup";
-import { axiosSendMessage } from "@utils/axios";
+
 import Loader from "@components/Loader";
-import Modal from "./Modal";
-import { useRef, useState } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import Modal from "@components/Modal";
+
+import useModal from "@hooks/useModal";
+import useContactForm from "@hooks/useContactForm";
 
 const ContactForm = () => {
-    const [name, setName] = useState("");
-    const mutationSendMessage = useMutation({
-        mutationFn: axiosSendMessage,
-        onSuccess: () => {
-            changeModalState();
-            formik.resetForm();
-        },
-    });
-
-    const formData = [
-        {
-            _id: 1,
-            inputFieldType: "input",
-            type: "text",
-            placeholder: "Dit navn",
-            name: "name",
-        },
-        {
-            _id: 2,
-            inputFieldType: "input",
-            placeholder: "Din email",
-            type: "text",
-            name: "email",
-        },
-        {
-            _id: 3,
-            inputFieldType: "textarea",
-            placeholder: "Din besked",
-            rows: 5,
-            name: "description",
-        },
-    ];
-
-    const initialValues = {
-        name: "",
-        email: "",
-        description: "",
-    };
-
-    const onSubmit = (values) => {
-        mutationSendMessage.mutate(values);
-        setName(values.name);
-    };
-
-    const validationSchema = object({
-        name: string()
-            .min(1, "Navn skal have mindst 1 karakter")
-            .required("Påkrævet!"),
-        email: string()
-            .min(1, "Email skal have mindst 1 karakter")
-            .email("Ugyldig e-mail!")
-            .required("Påkrævet!"),
-        description: string()
-            .min(1, "Besked skal have mindst 1 karakter")
-            .required("Påkrævet!"),
-    });
-
-    const formik = useFormik({
-        initialValues,
-        onSubmit,
-        validationSchema,
-    });
-
-    const backdropRef = useRef(null);
-    const contentModalRef = useRef(null);
-    const { contextSafe } = useGSAP({ scope: contentModalRef });
-
-    const [modalState, setModalState] = useState(false);
-
-    const changeModalState = contextSafe(() => {
-        setModalState((prev) => !prev);
-        const duration = 0.8;
-
-        if (modalState) {
-            gsap.to(backdropRef.current, {
-                opacity: 0,
-                duration,
-            });
-            gsap.to(contentModalRef.current, {
-                opacity: 0,
-                duration,
-                display: "none",
-            });
-        } else {
-            gsap.to(backdropRef.current, {
-                opacity: 1,
-                duration,
-            });
-            gsap.to(contentModalRef.current, {
-                opacity: 1,
-                duration,
-                display: "grid",
-            });
-        }
-    });
+    const { changeModalState, backdropRef, contentModalRef } = useModal();
+    const { name, formData, formik, mutationSendMessage } = useContactForm();
 
     const modalProps = {
         text: ` Tak for din besked , ${name}`,
         title: "Din besked er sendt",
-        modalState,
-        setModalState: changeModalState,
+        changeModalState,
         backdropRef,
         contentModalRef,
     };
