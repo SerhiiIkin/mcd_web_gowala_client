@@ -8,6 +8,7 @@ import "swiper/css";
 import "./index.css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "react-loading-skeleton/dist/skeleton.css";
 
 gsap.registerPlugin(useGSAP);
 

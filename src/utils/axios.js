@@ -106,7 +106,6 @@ export const axiosGetMessages = async () => {
 };
 
 export const axiosUpdateStatusMessage = async (message) => {
-    console.log("🚀 ~ axiosUpdateStatusMessage ~ message:", message);
     try {
         const { data } = await axiosInstance.put("message", message);
         return data;

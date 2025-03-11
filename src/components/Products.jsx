@@ -9,7 +9,7 @@ import { Pagination, A11y } from "swiper/modules";
 import { classes } from "@/utils/classes";
 import Product from "@components/Product";
 import Select from "@components/Select";
-import useProducts from "@/hooks/useProducts";
+import useProducts from "@hooks/useProducts";
 
 const options = [
     { value: "name-a-z", label: "Navn A-Z" },
@@ -42,7 +42,7 @@ const Products = ({ favorites }) => {
                     isLoading: data.isLoading,
                     error: data.error,
                 }}
-                SkeletonCount={4}
+                SkeletonCount={20}
                 containerClassNameSkeleton="py-5"
                 emptyText="Ingen produkter fundet"
                 className="py-5">

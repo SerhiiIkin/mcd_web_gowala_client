@@ -7,13 +7,14 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 
 const useOrderForm = () => {
 
-    const [items] = useLocalStorage("items", []);
+    const [items, saveItems] = useLocalStorage("items", []);
 
     const mutationAddOrder = useMutation({
         mutationFn: axiosAddOrder,
         onSuccess: () => {
             toast.success("Tak fordi du handler hos Gowala shop!");
             formik.resetForm();
+            saveItems([]);
         },
     });
 

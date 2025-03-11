@@ -2,20 +2,20 @@ import Skeleton from "react-loading-skeleton";
 
 import { classes } from "@utils/classes";
 
+
 const DataHandleLayout = ({
     data,
     children,
     className,
     SkeletonCount = 5,
     containerClassNameSkeleton,
-    emptyText
+    emptyText,
 }) => {
-    
     if (data.error) {
         return (
             <div
                 className={classes([
-                    "mb-5 text-secondaryRed",
+                    "mb-5 text-red-500",
                     className ?? "",
                 ])}>
                 {data.error}
@@ -24,7 +24,10 @@ const DataHandleLayout = ({
     }
     if (data?.data?.length === 0 && !data.isLoading && !data.error) {
         return (
-            <div className={classes(["mb-5", className ?? ""])}> {emptyText} </div>
+            <div className={classes(["mb-5", className ?? ""])}>
+                
+                {emptyText}
+            </div>
         );
     }
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 const useProducts = (favorites) => {
     const [products, setProducts] = useState([]);
+
     const data = useQuery({
         queryKey: ["products"],
         queryFn: axiosGetProducts,

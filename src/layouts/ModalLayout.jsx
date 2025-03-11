@@ -1,8 +1,8 @@
 const ModalLayout = ({
-    changeModalState,
     children,
     backdropRef,
     contentModalRef,
+    changeModalState,
 }) => {
     return (
         <div

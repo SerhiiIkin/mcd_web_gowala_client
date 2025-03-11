@@ -26,20 +26,13 @@ const CloseSvg = () => {
     );
 };
 const Order = ({ item }) => {
-    const { changeModalState, backdropRef, contentModalRef } = useModal();
+    const modalProps = useModal();
+    const { changeModalState } = modalProps;
     const { changeQuantity, openCheckModal, checkModal } =
         useOrder(changeModalState);
-    const modalProps = {
-        changeModalState,
-        backdropRef,
-        contentModalRef,
-    };
 
     return (
         <>
-            <button onClick={changeModalState} type="button">
-                open modal
-            </button>
             <ModalLayout {...modalProps}>
                 <div className="grid gap-2 py-8 px-2 text-center bg-secondary min-w-3/4">
                     <Title type="h3" className="break-words">

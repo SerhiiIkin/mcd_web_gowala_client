@@ -2,26 +2,27 @@ import Title from "@/components/Title";
 import SectionLayout from "@/layouts/SectionLayout";
 
 import Loader from "@components/Loader";
-import Modal from "@components/Modal";
 
 import useModal from "@hooks/useModal";
 import useContactForm from "@hooks/useContactForm";
+import ModalLayout from "@layouts/ModalLayout";
 
 const ContactForm = () => {
-    const { changeModalState, backdropRef, contentModalRef } = useModal();
-    const { name, formData, formik, mutationSendMessage } = useContactForm();
-
-    const modalProps = {
-        text: ` Tak for din besked , ${name}`,
-        title: "Din besked er sendt",
-        changeModalState,
-        backdropRef,
-        contentModalRef,
-    };
+    const modalProps = useModal();
+    const { changeModalState } = modalProps;
+    const { name, formData, formik, mutationSendMessage } =
+        useContactForm(changeModalState);
 
     return (
         <>
-            <Modal {...modalProps} />
+            <ModalLayout {...modalProps}>
+                <div className="grid gap-2 py-8 px-2 text-center bg-secondary min-w-3/4">
+                    <Title type="h3" className="break-words">
+                        {`Tak for din besked , ${name}`}
+                    </Title>
+                    <p className="text-primary"> Din besked er sendt!</p>
+                </div>
+            </ModalLayout>
             <SectionLayout classNameContainer="bg-secondary py-4">
                 <form
                     onSubmit={formik.handleSubmit}

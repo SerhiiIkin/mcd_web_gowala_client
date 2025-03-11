@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { object, string } from "yup";
 import { axiosSendMessage } from "@utils/axios";
 import { useState } from "react";
-const useContactForm = () => {
+const useContactForm = (changeModalState) => {
     const [name, setName] = useState("");
 
     const mutationSendMessage = useMutation({

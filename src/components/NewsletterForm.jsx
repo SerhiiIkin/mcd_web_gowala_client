@@ -3,19 +3,20 @@ import { useMutation } from "@tanstack/react-query";
 import { axiosSubscribe } from "@utils/axios";
 import { object, string } from "yup";
 import Loader from "@components/Loader";
-import {  useState } from "react";
-import Modal from "@components/Modal";
+import ModalLayout from "@layouts/ModalLayout";
+import Title from "@components/Title";
 import useModal from "@hooks/useModal";
+import { useState } from "react";
 
 const NewsletterForm = () => {
     const [email, setEmail] = useState("");
-
+    const modalProps = useModal();
     const mutationSubscribe = useMutation({
         mutationFn: axiosSubscribe,
         onSuccess: (data) => {
             if (!data.data.email) return;
-            changeModalState();
             setEmail(data.data.email);
+            modalProps.changeModalState();
             formik.resetForm();
         },
     });
@@ -38,20 +39,15 @@ const NewsletterForm = () => {
         validationSchema,
     });
 
-    const { changeModalState, backdropRef, contentModalRef } = useModal();
-
-    const modalProps = {
-        text: " Du har nu tilmeldt dit nyhedsbrev.",
-        title: "Tak",
-        email,
-        changeModalState,
-        backdropRef,
-        contentModalRef,
-    };
-
     return (
         <>
-            <Modal {...modalProps} />
+            <ModalLayout {...modalProps}>
+                <div className="grid gap-2 py-8 px-2 text-center bg-secondary min-w-3/4">
+                    <Title type="h3" className="break-words">
+                        Du har nu tilmeldt dit nyhedsbrev til email : <span className="text-primary">{email}</span>
+                    </Title>
+                </div>
+            </ModalLayout>
             <form onSubmit={formik.handleSubmit} className="grid gap-2">
                 <label className="relative pb-6 grid">
                     <input

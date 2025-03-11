@@ -10,33 +10,26 @@ const useModal = () => {
     const [modalState, setModalState] = useState(false);
 
     const changeModalState = contextSafe(() => {
-        setModalState((prev) => !prev);
-        const duration = 0.8;
+        setModalState((prev) => {
+            const newState = !prev;
+            const duration = 0.8;
 
-        if (modalState) {
             gsap.to(backdropRef.current, {
-                opacity: 0,
+                opacity: newState ? 1 : 0,
                 duration,
             });
+
             gsap.to(contentModalRef.current, {
-                opacity: 0,
+                opacity: newState ? 1 : 0,
                 duration,
-                display: "none",
+                display: newState ? "grid" : "none",
             });
-        } else {
-            gsap.to(backdropRef.current, {
-                opacity: 1,
-                duration,
-            });
-            gsap.to(contentModalRef.current, {
-                opacity: 1,
-                duration,
-                display: "grid",
-            });
-        }
+
+            return newState;
+        });
     });
 
-    return { modalState, changeModalState, backdropRef, contentModalRef };
+    return { changeModalState, backdropRef, contentModalRef };
 };
 
 export default useModal;

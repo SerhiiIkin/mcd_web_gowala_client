@@ -1,4 +1,4 @@
-import useOrderForm from "@/hooks/useOrderForm";
+import useOrderForm from "@hooks/useOrderForm";
 import Loader from "@components/Loader";
 
 const OrderForm = () => {

@@ -47,7 +47,7 @@ const Select = ({ onChange, options }) => {
 
     return (
         <div
-            className="relative"
+            className="relative mb-6 max-w-xs md:mx-auto"
             ref={selectRef}
             tabIndex={0}
             onKeyDown={handleKeyDown}
@@ -59,7 +59,7 @@ const Select = ({ onChange, options }) => {
             </div>
 
             {isOpen && (
-                <div className="absolute mt-1 w-full left-0 bg-white shadow-md rounded-md z-30">
+                <div className="absolute mt-1l left-0 right-0 bg-white shadow-md rounded-md z-30">
                     {options.map((option, index) => (
                         <div
                             key={option.value}
@@ -81,6 +81,5 @@ const Select = ({ onChange, options }) => {
         </div>
     );
 };
-
 
 export default Select;
